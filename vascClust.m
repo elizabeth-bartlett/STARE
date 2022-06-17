@@ -155,7 +155,7 @@ end
 %%%iterations, find the indice of the most frequent peak & select final
 %%%step 1 vascular cluster based on highest peak signal from the frequent
 %%%indice.
-uout.vascClust.frequentPeakInd=mode(out.vascClust.vascClustsPeakInd);
+out.vascClust.frequentPeakInd=mode(out.vascClust.vascClustsPeakInd);
 modeInds=out.vascClust.vascClustsPeakInd==out.vascClust.frequentPeakInd;
 indOptimalNumClus=find(out.vascClust.vascClustsPeakVal==max(out.vascClust.vascClustsPeakVal(modeInds)));
 
