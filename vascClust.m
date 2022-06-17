@@ -155,13 +155,10 @@ end
 %%%iterations, find the indice of the most frequent peak & select final
 %%%step 1 vascular cluster based on highest peak signal from the frequent
 %%%indice.
-uniquePeakInds=unique(out.vascClust.vascClustsPeakInd);
-uniquePeakInds=uniquePeakInds(~isnan(uniquePeakInds)); %Eliminate NaNs
-multiplesPeakInds=uniquePeakInds(histcounts(out.vascClust.vascClustsPeakInd,[uniquePeakInds,Inf])~=1);
-out.vascClust.frequentPeakInd=max(multiplesPeakInds); %Indice of most frequent vascular TAC peak
+uout.vascClust.frequentPeakInd=mode(out.vascClust.vascClustsPeakInd);
+modeInds=out.vascClust.vascClustsPeakInd==out.vascClust.frequentPeakInd;
+indOptimalNumClus=find(out.vascClust.vascClustsPeakVal==max(out.vascClust.vascClustsPeakVal(modeInds)));
 
-out.vascClust.vascClustsPeakVal(out.vascClust.vascClustsPeakInd~=out.vascClust.frequentPeakInd)=NaN; %Remove any potential vascular TACs that don't have a peak at the most common peak time
-[~,indOptimalNumClus]=max(out.vascClust.vascClustsPeakVal); %Get max value for TACs peaking at the common indice
 out.vascClust.step1OptimalNumClus=ks(indOptimalNumClus);
 out.vascClust.step1IndOptimalVascClus=out.vascClust.vascClustInds(indOptimalNumClus);
 out.vascClust.Step1_idx=kmeansClusIdxs(:,indOptimalNumClus);
