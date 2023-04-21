@@ -10,8 +10,17 @@ function [out] = fitVascMeanTac (in)
 out=in;
 
 %Get weights for fitting (square root of frame duration)
-endTimeFrame=filter(2,[1 1],in.midtime);% Generate the end times from the frame midtimes 
-frameDurs=endTimeFrame(1:end,1)-[0;endTimeFrame(1:end-1,1)];
+% Filter function caused issues when frames were dropped.
+% endTimeFrame=filter(2,[1 1],in.midtime);% Generate the end times from the frame midtimes 
+% frameDurs=endTimeFrame(1:end,1)-[0;endTimeFrame(1:end-1,1)];
+frameDurs=zeros(size(in.midtime));
+for f=1:length(in.midtime)
+    if f==1
+        frameDurs(f)=(in.midtime(f)-0)*2;
+    else
+        frameDurs(f)=(in.midtime(f)-in.midtime(f-1))*2;
+    end
+end
 out.weights=real(sqrt(frameDurs));
 
 %Get midtime and vasc TAC data post-peak   
